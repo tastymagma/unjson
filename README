@@ -1,0 +1,36 @@
+# unjson
+
+## Intro
+
+A small utility to extract information from JSON files on the command line.
+
+## Usage
+
+Usage: unjson [-h] [-I] [-N] [key]/[index]/[-] [key]/[index]/[-] ...
+  -h      Print this help and exit
+  -I      Continue after key/index errors
+  -N      Ignore null values
+  [key]   Select only value of key of the object in current level
+  [index] Select only the index of array in current level
+  [-]     Go one level deeper
+            (if not preceded by key or index will select
+             all values of the current level)
+
+Reads a JSON file from stdin and prints a string representation
+of all selected elements. (if an element is complex (array or object)
+it will be printed as JSON)
+
+## Examples
+
+Give a simple overview of issues of a github project
+  curl "https://api.github.com/repos/USER/PROJECT/issues" | unjson - updated_at title | paste - - -d " | " | sort
+
+Since there's nothing before "-" every element of the top-level object
+(in this case: an array of issues) will be matchted. If you want for example
+issue 1, 2, and 5 instead you can do:
+  ... | unjson 1 2 5 ...
+
+## Install/Uninstall
+
+  # make install
+  # make uninstall
